@@ -129,7 +129,7 @@ function ReturnToChest(isDone)
 
     if isDone == false then -- turtle goes back to mining
         TDown()
-        EmptyInv(false)
+        EmptyInv()
         CheckFuelInv()
         GoToXLocation(false) --returns back to the hole
         for i = 1, totalHeight, 1 do -- digs back down to level when inv was full and resumes DigLevel()
@@ -137,21 +137,14 @@ function ReturnToChest(isDone)
         end
     elseif isDone == true then --if true, turtle will stop at the chest (done mining)
         TDown() 
-        EmptyInv(true)
+        EmptyInv()
     end
 end
 
-function EmptyInv(emptyAllFlag)
-    if emptyAllFlag then
-        for i = 1, 16, 1 do
-            turtle.select(i)
-            turtle.dropDown()
-        end
-    elseif emptyAllFlag == false then
-        for i = 2, 16, 1 do
-            turtle.select(i)
-            turtle.dropDown()
-        end
+function EmptyInv()
+    for i = 2, 16, 1 do
+        turtle.select(i)
+        turtle.dropDown()
     end
 end
 
