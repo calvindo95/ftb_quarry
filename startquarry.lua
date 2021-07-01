@@ -9,26 +9,30 @@ argument5 = tonumber(arg[5]) -- num of x positions
 slot = 2
 fuel = 4
 
-function PlaceFuel()
+function PlaceFuel(fuelNum)
     turtle.select(slot) -- placing fuel into turtle
-    if turtle.getItemCount() >= fuel then
-        turtle.drop(fuel)
+    if turtle.getItemCount() >= fuelNum then
+        turtle.drop(fuelNum)
     else
         slot = slot + 1
-        turtle.select(slot)
-        if turtle.getItemCount() >= fuel then
-            turtle.drop(fuel)
+        if slot > 16 then
+        elseif slot <= 16 then
+            turtle.select(slot)
+            if turtle.getItemCount() >= fuelNum then
+                turtle.drop(fuelNum)
+            end
         end
     end
 end
 
+numTurt = 0
 for i = 1, argument4/argument5, 1 do
     for j = 1, argument5, 1 do
-        print("placing turtle", i*j) --places down turtle
+        print("placing turtle", numTurt+1) --places down turtle
         turtle.select(1)
         turtle.place()
 
-        PlaceFuel() -- places fuel into turtle
+        PlaceFuel(fuel) -- places fuel into turtle
 
         peripheral.call('front','turnOn') -- turns turtle on
         os.sleep(1)
@@ -36,8 +40,8 @@ for i = 1, argument4/argument5, 1 do
         local modem -- sends quarry command to turtle
         modem = peripheral.wrap("left")
         modem.transmit(3, 1, string.format("quarry %d %d %d %d %d", j, argument1, argument2, argument3, argument4))
-        print(j, argument1, argument2, argument3, argument4, argument5)
-        print("message sent")
+        print("message sent to turtle", numTurt+1)
+        numTurt = numTurt + 1
         os.sleep(4)
     end
 end
@@ -51,6 +55,7 @@ while true do
     replyChannel, message, senderDistance = os.pullEvent("modem_message")
 
     if message == "kill_me" then
+        print("Killing turtle #", killedTurtles)
         turtle.select(1)
         turtle.dig()
         killedTurtles = killedTurtles + 1
@@ -61,6 +66,7 @@ while true do
     end
 
     if message == "refuel_me" then
-        PlaceFuel()
+        print("Refueling turtle with 2 fuel")
+        PlaceFuel(2)
     end
 end
