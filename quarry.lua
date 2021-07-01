@@ -216,7 +216,7 @@ end
 
 function CheckFuelInv()
     turtle.select(1)
-    if turtle.getItemCount() <= 1 then
+    if turtle.getItemCount() <= 2 then
         --send message to refuel turtle
         local modem
         modem = peripheral.wrap("left")
